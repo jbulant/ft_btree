@@ -1,21 +1,20 @@
 #include <stdio.h>
-#include "./includes/ft_printf.h"
-//#include "libft.h"
+#include "libft.h"
+#include "ft_graph.h"
 #include <limits.h>
 #include <locale.h>
+
 int			main(int ac, char **av)
 {
-	setlocale(LC_ALL, "");
-	if (ac == 1)
-		return (0);
-	printf("THEM===\n");
-//	printf("%d\n", printf("%p\n", av[1]));
-	printf("%d\n", printf(NULL, LLONG_MAX + 2, 0x80000000));
-	printf("OUR ===\n");
-//	ft_printf("%d\n", ft_printf("%p\n", av[1]));
+	t_btree		*root;
 
-	ft_printf("%d\n", ft_printf(NULL, LLONG_MAX + 2, 0x80000000));
-//	printf("%llu \n", LLONG_MAX + 2);
-	
+	if (ac == 1)
+		return (0);	
+	if (!(root = btree_create_node(av[1], ft_strlen(av[1]) + 1)))
+		return (1);
+	printf("%s\n", root->content);
+	printf("%zu\n", sizeof(t_btree));
+	// printf("%p\n%p\n", &root->right, &root->c);
+	ft_memdel((void**)&root);
 	return (0);
 }

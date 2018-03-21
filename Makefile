@@ -6,27 +6,31 @@
 #    By: jbulant <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 16:49:28 by jbulant           #+#    #+#              #
-#    Updated: 2018/03/21 00:27:54 by jerome           ###   ########.fr        #
+#    Updated: 2018/03/21 02:30:59 by jerome           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = ft_graph.a
 
-DEBUG = 1
+override DEBUG = 1
 
 LIBFTDIR = libft/
 LIBFT_NAME = libft.a
 LIBFT = $(LIBFTDIR)$(LIBFT_NAME)
 
 SRCSDIR = srcs/
-SRCS_NAME = 
+SRCS_NAME = btree_create_node.c
 SRCS = $(addprefix $(SRCSDIR),$(SRCS_NAME))
 
 OBJDIR = objs/
 OBJS = $(addprefix $(OBJDIR),$(SRCS_NAME:.c=.o))
 
-INCLUDES = -Iincludes -Ilibft
+INCLUDES = -Iincludes -Ilibft/includes
 LIBS = -L $(LIBFTDIR) -lft
+
+HEADERS_PATH = includes/
+HEADERS_NAME = 
+HEADERS = $(addprefix $(HEADERS_PATH), $(HEADERS_NAME))
 
 CFLAGS = -Wall -Wextra -Werror
 DEBUGFLAGS = -fsanitize=address -g3
@@ -35,28 +39,141 @@ DEBUGFLAGS = -fsanitize=address -g3
 
 all: $(NAME)
 
-$(OBJDIR)%.o: $(SRCSDIR)%.c
+$(OBJDIR)%.o: $(SRCSDIR)%.c ${HEADERS}
 	@mkdir -p objs
-	@echo compiling: `echo $< | rev | cut -d'/' -f1 | rev | cut -d'.' -f1`
-	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	@if [ $(DEBUG) -eq 1 ];\
+	then\
+		$(CC) $(CFLAGS) $(DEBUGFLAGS) $(INCLUDES) -c -o $@ $<;\
+		echo [`echo $(NAME) | rev | cut -d '.' -f2 | rev`][DEBUG]converting: `echo $< | rev | cut -d'/' -f1 | rev`;\
+	else\
+		$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<;\
+		echo [`echo $(NAME) | rev | cut -d '.' -f2 | rev`]converting: `echo $< | rev | cut -d'/' -f1 | rev`;\
+	fi
 
 $(NAME): $(OBJS) $(LOBJS)
 	ar rc $(NAME) $(OBJS) $(LOBJS)
 	ranlib $(NAME)
 
-test: $(NAME)
+$(LIBFT):
+	make -C $(LIBFTDIR)
+
+test: $(OBJS) $(LIBFT)
 	@if [ $(DEBUG) -eq 1 ];\
 	then\
-		$(CC) $(CFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(NAME) $(LIBS) -o `echo $(NAME) | rev | cut -d'.' -f2 | rev`_test;\
+		$(CC) $(CFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(OBJS) main.c $(LIBS) -o `echo $(NAME) | rev | cut -d'.' -f2 | rev`_test;\
 	else\
-		$(CC) $(CFLAGS) $(INCLUDES) $(NAME) $(LIBS) -o `echo $(NAME) | rev | cut -d'.' -f2 | rev`_test;\
+		$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) main.c $(LIBS) -o `echo $(NAME) | rev | cut -d'.' -f2 | rev`_test;\
 	fi
 
 clean:
 	rm -f $(OBJS)
 	rm -rf $(OBJDIR)
+	make -C $(LIBFTDIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	make -C $(LIBFTDIR) fclean
 
 re: fclean all
+
+coffee:
+	@clear
+	@echo ""
+	@echo "                   ("
+	@echo "	                     )     ("
+	@echo "               ___...(-------)-....___"
+	@echo '           .-""       )    (          ""-.'
+	@echo "      .-''''|-._             )         _.-|"
+	@echo '     /  .--.|   `""---...........---""`   |'
+	@echo "    /  /    |                             |"
+	@echo "    |  |    |                             |"
+	@echo "     \  \   |                             |"
+	@echo "      '\ '\ |                             |"
+	@echo "        '\ '|                             |"
+	@echo "        _/ /\                             /"
+	@echo "       (__/  \                           /"
+	@echo '    _..---""` \                         /`""---.._'
+	@echo " .-'           \                       /          '-."
+	@echo ":               '-.__             __.-'              :"
+	@echo ':                  ) ""---...---"" (                :'
+	@echo "\'._                '"--...___...--"'              _.'"
+	@echo '   \""--..__                              __..--""/'
+	@echo "     '._     """----.....______.....----"""         _.'"
+	@echo '         ""--..,,_____            _____,,..--"""'''
+	@echo '                      """------"""'
+	@sleep 0.5
+	@clear
+	@echo ""
+	@echo "                 ("
+	@echo "	                  )      ("
+	@echo "               ___..(.------)--....___"
+	@echo '           .-""       )   (           ""-.'
+	@echo "      .-''''|-._      (       )        _.-|"
+	@echo '     /  .--.|   `""---...........---""`   |'
+	@echo "    /  /    |                             |"
+	@echo "    |  |    |                             |"
+	@echo "     \  \   |                             |"
+	@echo "      '\ '\ |                             |"
+	@echo "        '\ '|                             |"
+	@echo "        _/ /\                             /"
+	@echo "       (__/  \                           /"
+	@echo '    _..---""` \                         /`""---.._'
+	@echo " .-'           \                       /          '-."
+	@echo ":               '-.__             __.-'              :"
+	@echo ':                  ) ""---...---"" (                :'
+	@echo "\'._                '"--...___...--"'              _.'"
+	@echo '   \""--..__                              __..--""/'
+	@echo "     '._     """----.....______.....----"""         _.'"
+	@echo '         ""--..,,_____            _____,,..--"""'''
+	@echo '                      """------"""'
+	@sleep 0.5
+	@clear
+	@echo ""
+	@echo "               ("
+	@echo "	                  )     ("
+	@echo "               ___..(.------)--....___"
+	@echo '           .-""      )    (           ""-.'
+	@echo "      .-''''|-._      (       )        _.-|"
+	@echo '     /  .--.|   `""---...........---""`   |'
+	@echo "    /  /    |                             |"
+	@echo "    |  |    |                             |"
+	@echo "     \  \   |                             |"
+	@echo "      '\ '\ |                             |"
+	@echo "        '\ '|                             |"
+	@echo "        _/ /\                             /"
+	@echo "       (__/  \                           /"
+	@echo '    _..---""` \                         /`""---.._'
+	@echo " .-'           \                       /          '-."
+	@echo ":               '-.__             __.-'              :"
+	@echo ':                  ) ""---...---"" (                :'
+	@echo "\'._                '"--...___...--"'              _.'"
+	@echo '   \""--..__                              __..--""/'
+	@echo "     '._     """----.....______.....----"""         _.'"
+	@echo '         ""--..,,_____            _____,,..--"""'''
+	@echo '                      """------"""'
+	@sleep 0.5
+	@clear
+	@echo ""
+	@echo "             (         ) "
+	@echo "	              )        ("
+	@echo "               ___)...----)----....___"
+	@echo '           .-""      )    (           ""-.'
+	@echo "      .-''''|-._      (       )        _.-|"
+	@echo '     /  .--.|   `""---...........---""`   |'
+	@echo "    /  /    |                             |"
+	@echo "    |  |    |                             |"
+	@echo "     \  \   |                             |"
+	@echo "      '\ '\ |                             |"
+	@echo "        '\ '|                             |"
+	@echo "        _/ /\                             /"
+	@echo "       (__/  \                           /"
+	@echo '    _..---""` \                         /`""---.._'
+	@echo " .-'           \                       /          '-."
+	@echo ":               '-.__             __.-'              :"
+	@echo ':                  ) ""---...---"" (                :'
+	@echo "\'._                '"--...___...--"'              _.'"
+	@echo '   \""--..__                              __..--""/'
+	@echo "     '._     """----.....______.....----"""         _.'"
+	@echo '         ""--..,,_____            _____,,..--"""'''
+	@echo '                      """------"""'
+
