@@ -3,8 +3,9 @@
 
 # include "ft_graph.h"
 
-t_bool		node_has_child(t_btree *node);
 t_btree		*node_grandparent(t_btree *node);
 t_btree		*node_uncle(t_btree *node);
+void		btree_rotate_left(t_btree *node);
+void		btree_rotate_right(t_btree *node);
 
 #endif

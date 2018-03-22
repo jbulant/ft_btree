@@ -6,7 +6,7 @@
 #    By: jbulant <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 16:49:28 by jbulant           #+#    #+#              #
-#    Updated: 2018/03/21 19:40:27 by jbulant          ###   ########.fr        #
+#    Updated: 2018/03/22 06:52:41 by fjanoty          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -21,8 +21,10 @@ LIBFT = $(LIBFTDIR)$(LIBFT_NAME)
 SRCSDIR = srcs/
 SRCS_NAME = btree_create_node.c \
 			btree_insert_data.c \
-			btree_rotate.c \
-			btree_search_item.c
+			btree_rotate.c		\
+			btree_search_item.c \
+			ft_graph_utils.c	\
+
 SRCS = $(addprefix $(SRCSDIR),$(SRCS_NAME))
 
 OBJDIR = objs/
@@ -32,7 +34,7 @@ INCLUDES = -Iincludes -Ilibft/includes
 LIBS = -L $(LIBFTDIR) -lft
 
 HEADERS_PATH = includes/
-HEADERS_NAME = 
+HEADERS_NAME = ft_graph.h ft_graph_utils.h
 HEADERS = $(addprefix $(HEADERS_PATH), $(HEADERS_NAME))
 
 CFLAGS = -Wall -Wextra -Werror

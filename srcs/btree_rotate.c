@@ -1,16 +1,25 @@
 #include "ft_graph.h"
 
-static t_bool	node_has_child(t_btree *node)
+void			btree_rotate_left(t_btree *node)
 {
-	return (node && !(node->left || node->right) ? FALSE : TRUE);
+	t_btree		*tmp;
+
+	if (!(tmp = node->right))
+		return ;
+	node->right = tmp->left;
+	tmp->left = node;
+	tmp->parent = node->parent;
+	node->parent = tmp;
 }
 
-// void			btree_rotate_left(t_btree *node)
-// {
-	
-// }
+void			btree_rotate_right(t_btree *node)
+{
+	t_btree		*tmp;
 
-// void			btree_rotate_right(t_btree *node)
-// {
-
-// }
+	if (!(tmp = node->left))
+		return ;
+	node->left = tmp->right;
+	tmp->right = node;
+	tmp->parent = node->parent;
+	node->parent = tmp;
+}

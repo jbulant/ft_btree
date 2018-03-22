@@ -3,6 +3,6 @@
 *.o
 *.a
 objs
-main.c
 a.out
 *.dSYM
+ft_graph_test
