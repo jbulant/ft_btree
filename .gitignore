@@ -5,3 +5,4 @@
 objs
 main.c
 a.out
+*.dSYM
